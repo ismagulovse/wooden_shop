@@ -1,0 +1,18 @@
+Options -Indexes
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Existing files and directories are served directly
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Admin routes -> admin front controller
+    RewriteRule ^admin/?$ admin/index.php [L,QSA]
+    RewriteRule ^admin/(.*)$ admin/index.php [L,QSA]
+
+    # All other routes -> main front controller
+    RewriteRule ^ index.php [L,QSA]
+</IfModule>

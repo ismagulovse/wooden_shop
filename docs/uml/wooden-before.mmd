@@ -1,0 +1,143 @@
+classDiagram
+    direction TB
+
+    namespace Core {
+        class Router["Маршрутизатор"]
+        class BaseController["Базовый контроллер"]
+        class BaseModel["Базовая модель"]
+        class PDO["PDO — доступ к БД"]
+    }
+
+    namespace Store {
+        class HomeController["Главная"]
+        class CatalogController["Каталог"]
+        class AuthController["Вход и регистрация"]
+        class ProfileController["Личный кабинет"]
+        class CartController["Корзина — страницы"]
+        class FavoriteController["Избранное — страницы"]
+        class CheckoutController["Оформление заказа"]
+        class ErrorController["Страница ошибки"]
+    }
+
+    namespace Admin {
+        class AdminBaseController["Основа админки"]
+        class AdminDashboardController["Обзор магазина"]
+        class AdminProductController["Управление товарами"]
+        class AdminCategoryController["Управление категориями"]
+        class AdminOrderController["Управление заказами"]
+        class AdminUserController["Управление пользователями"]
+        class AdminTrainingController["Учебная страница"]
+    }
+
+    namespace Models {
+        class User["Пользователь"]
+        class Product["Товар"]
+        class Category["Категория"]
+        class Order["Заказ"]
+        class Cart["Корзина"]
+        class Favorite["Избранное"]
+    }
+
+    namespace Training {
+        class QuoteComparison["Сравнение расчётов"]
+    }
+
+    namespace Delivery {
+        class CourierDelivery["Курьер"]
+        class FreightDelivery["Перевозчик"]
+    }
+
+    namespace Packaging {
+        class ProtectivePackaging["Защитная упаковка"]
+        class CratePackaging["Короба"]
+    }
+
+    namespace Assembly {
+        class WorkshopAssembly["Сборка в мастерской"]
+        class OnSiteAssembly["Выездная сборка"]
+    }
+
+    namespace Discount {
+        class LoyaltyDiscount["Скидка за сумму"]
+        class BundleDiscount["Скидка за комплект"]
+    }
+
+    namespace Warranty {
+        class ExtendedWarranty["Гарантия от стоимости"]
+        class FixedWarranty["Фиксированная гарантия"]
+    }
+
+    namespace Recycling {
+        class WeightRecycling["Вывоз по весу"]
+        class ItemRecycling["Вывоз по количеству"]
+    }
+
+    <<abstract>> BaseController
+    <<abstract>> BaseModel
+    <<abstract>> AdminBaseController
+    <<external>> PDO
+
+    BaseController <|-- HomeController
+    BaseController <|-- CatalogController
+    BaseController <|-- AuthController
+    BaseController <|-- ProfileController
+    BaseController <|-- CartController
+    BaseController <|-- FavoriteController
+    BaseController <|-- CheckoutController
+    BaseController <|-- ErrorController
+    BaseController <|-- AdminBaseController
+    AdminBaseController <|-- AdminDashboardController
+    AdminBaseController <|-- AdminProductController
+    AdminBaseController <|-- AdminCategoryController
+    AdminBaseController <|-- AdminOrderController
+    AdminBaseController <|-- AdminUserController
+    AdminBaseController <|-- AdminTrainingController
+    BaseModel <|-- User
+    BaseModel <|-- Product
+    BaseModel <|-- Category
+    BaseModel <|-- Order
+    BaseModel <|-- Cart
+    BaseModel <|-- Favorite
+
+    BaseModel --> PDO : хранит соединение
+    Router ..> BaseController : вызывает контроллеры
+    Router ..> ErrorController : ошибка маршрута
+    HomeController ..> Product
+    HomeController ..> Category
+    HomeController ..> Favorite
+    CatalogController ..> Product
+    CatalogController ..> Category
+    CatalogController ..> Favorite
+    AuthController ..> User
+    ProfileController ..> User
+    ProfileController ..> Order
+    ProfileController ..> Favorite
+    CartController ..> Cart
+    FavoriteController ..> Favorite
+    FavoriteController ..> Cart
+    CheckoutController ..> Cart
+    CheckoutController ..> User
+    CheckoutController ..> Order
+    AdminProductController ..> Product
+    AdminProductController ..> Category
+    AdminCategoryController ..> Category
+    AdminOrderController ..> Order
+    AdminUserController ..> User
+    AdminUserController ..> PDO
+    AdminDashboardController ..> PDO
+    AdminTrainingController ..> QuoteComparison
+    QuoteComparison ..> CourierDelivery
+    QuoteComparison ..> FreightDelivery
+    QuoteComparison ..> ProtectivePackaging
+    QuoteComparison ..> CratePackaging
+    QuoteComparison ..> WorkshopAssembly
+    QuoteComparison ..> OnSiteAssembly
+    QuoteComparison ..> LoyaltyDiscount
+    QuoteComparison ..> BundleDiscount
+    QuoteComparison ..> ExtendedWarranty
+    QuoteComparison ..> FixedWarranty
+    QuoteComparison ..> WeightRecycling
+    QuoteComparison ..> ItemRecycling
+
+    note for BaseModel "Модели работают с таблицами через SQL.\nСвязи таблиц не являются наследованием классов."
+    note for QuoteComparison "Учебные классы находятся в PHP-пространстве WoodenTraining.\nГруппы на схеме служат только для удобства чтения."
